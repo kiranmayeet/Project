@@ -1,0 +1,107 @@
+{% extends "home.html" %}
+{% block title %}
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Text and File Fields</title>
+<style>
+  body {
+        font-family: Arial, sans-serif;
+        background-image: url('/static/images/i10.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center; 
+        height: 100vh;
+
+        
+      }
+      
+      .containr {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      
+  
+  .file-container {
+    
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 500px;
+    text-align: left;
+    margin-top: 70px;
+  }
+  
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    font-size: 18px;
+  }
+  
+  .form-group input[type="text"],
+  .form-group input[type="file"] {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    width: 100%;
+    margin-top: 5px;
+  }
+  
+  .form-group button {
+    background-color: #4989b4;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+    transition: background-color 0.3s;
+  }
+  
+  .form-group button:hover {
+    background-color: #61a9da;
+  }
+</style>
+</head>
+<body>
+<div class="containr">
+    <div class="file-container">
+      {% if messages %}
+      {% for message in messages %}
+      <center><p class="alert alert-success">{{ message }}</p></center>
+      
+      {% endfor %}
+      {% endif %}
+  <center><h2>Upload File</h2></center>
+  <form action="{% url 'uploadfile' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="text-field">File Name:</label>
+      <input type="text" id="text-field" name="filename" placeholder="Enter text here" required>
+    </div>
+    <div class="form-group">
+      <label for="file-field">Select File:</label>
+      <input type="file" id="file-field" name="file" accept=".txt" required>
+    </div>
+    <div class="form-group">
+      <button type="submit">Submit</button>
+    </div>
+  </form>
+</div>
+</div>
+{% endblock %}

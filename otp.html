@@ -1,0 +1,130 @@
+{% extends "index.html" %}
+
+{% block title %}OTP Verification{% endblock %}
+
+{% block content %}
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('/static/images/i8.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .otp-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .otp-box {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .otp-box h2 {
+            margin-bottom: 20px;
+        }
+
+        .otp-box input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        .otp-box button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .otp-box button:hover {
+            background-color: #0056b3;
+        }
+
+        .resend-button {
+            background-color: #28a745;
+            margin-top: 10px;
+        }
+
+        .resend-button:disabled {
+            background-color: #a5d6a7;
+            cursor: not-allowed;
+        }
+
+        .alert {
+            margin-bottom: 15px;
+            color: red;
+        }
+
+        .success {
+            margin-bottom: 15px;
+            color: green;
+        }
+
+        .timer {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #555;
+        }
+    </style>
+</head>
+
+<div class="otp-container">
+    <div class="otp-box">
+        {% if messages %}
+            {% for message in messages %}
+                <p class="{% if message.tags == 'success' %}success{% else %}alert{% endif %}">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+
+        <h2>Enter OTP</h2>
+        <p class="success">OTP has been sent to your email: <strong>{{ mail }}</strong></p>
+
+        <form method="POST" action="{% url 'otpRegistration' mail %}">
+            {% csrf_token %}
+            <input type="text" name="otp" placeholder="Enter OTP" required>
+            <button type="submit">Verify</button>
+        </form>
+        <form method="GET" action="{% url 'resend_otp' mail %}">
+            <button id="resendBtn" class="resend-button" disabled>Resend OTP</button>
+        </form>
+        <div class="timer">
+            You can resend OTP in <span id="countdown">60</span> seconds
+        </div>
+    </div>
+</div>
+
+<script>
+    let timer = 60;
+    const countdownElement = document.getElementById('countdown');
+    const resendBtn = document.getElementById('resendBtn');
+
+    const countdown = setInterval(() => {
+        timer--;
+        countdownElement.textContent = timer;
+
+        if (timer <= 0) {
+            clearInterval(countdown);
+            countdownElement.textContent = "0";
+            resendBtn.disabled = false;
+        }
+    }, 1000);
+</script>
+{% endblock %}

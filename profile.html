@@ -1,0 +1,110 @@
+{% extends "home.html" %}
+
+{% block title %}
+<style>
+    body {
+        background-image: url('/static/images/i10.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-attachment: fixed;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .profile-container {
+        display: flex;
+        flex-wrap: wrap;
+        background-color: rgba(255, 255, 255, 0.95); /* slight transparency */
+        padding: 30px;
+        margin: 40px auto;
+        border-radius: 16px;
+        max-width: 900px;
+        box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+    }
+
+    .profile-left {
+        flex: 1.2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        gap: 20px;
+        text-align: center;
+    }
+
+    .profile-left img {
+        width: 260px;
+        height: 260px;
+        border-radius: 10%;
+        object-fit: cover;
+        border: 4px solid #007bff;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    }
+
+    .profile-left h1 {
+        font-size: 26px;
+        color: #333;
+        margin: 0;
+    }
+
+    .profile-right {
+        flex: 2;
+        padding: 20px;
+    }
+
+    .profile-detail {
+        margin-bottom: 16px;
+        font-size: 16px;
+        line-height: 1.6;
+        color: #333;
+    }
+
+    .profile-label {
+        font-weight: 600;
+        color: #007bff;
+        margin-right: 10px;
+    }
+
+    .edit-btn {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 25px;
+        background-color: #28a745;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 8px;
+        transition: background-color 0.3s ease;
+    }
+
+    .edit-btn:hover {
+        background-color: #218838;
+    }
+
+    @media (max-width: 768px) {
+        .profile-container {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .profile-left {
+            flex-direction: column;
+            text-align: center;
+        }
+    }
+</style>
+
+<div class="profile-container">
+    <div class="profile-left">
+        <img src="/{{ user.profile|default:'static/images/default-profile.png' }}" alt="Profile Picture">
+        <h1>{{ user.name }}</h1>
+    </div>
+
+    <div class="profile-right">
+        <div class="profile-detail"><span class="profile-label">Email:</span>{{ user.email }}</div>
+        <div class="profile-detail"><span class="profile-label">DOB:</span>{{ user.dob }}</div>
+        <div class="profile-detail"><span class="profile-label">Gender:</span>{{ user.gender }}</div>
+        <div class="profile-detail"><span class="profile-label">Status:</span>{{ user.status }}</div>
+        <a href="{% url 'update_profile' %}" class="edit-btn">Edit Profile</a>
+    </div>
+</div>
+{% endblock %}

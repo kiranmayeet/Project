@@ -1,0 +1,43 @@
+{% extends "home.html" %}
+{% block title %}
+<head>
+    <title>Update Profile</title>
+    <style>
+        body { font-family: sans-serif; background: #f2f2f2; margin: 0px; }
+        form { background: #fff; padding: 30px; border-radius: 12px; max-width: 600px; margin: auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        input, select, textarea { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 6px; }
+        label { font-weight: bold; }
+        button { background: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 6px; }
+        button:hover { background: #218838; }
+    </style>
+</head>
+<body>
+    <h2 style="text-align:center;">Update Profile</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label>Name</label>
+        <input type="text" name="name" value="{{ user.name }}" required>
+
+        <label>Email</label>
+        <small style="color: gray;">(Email cannot be changed.)</small><br>
+        <input type="email" name="email" value="{{ user.email }}" readonly>
+        
+
+        <label>Date of Birth</label>
+        <small style="color: gray;">(Date of Birth cannot be changed.)</small>
+        <input type="date" name="dob" value="{{ user.dob|date:'Y-m-d' }}" readonly>
+        
+        <label>Gender</label>
+        <select name="gender" required>
+            <option value="Male" {% if user.gender == "Male" %}selected{% endif %}>Male</option>
+            <option value="Female" {% if user.gender == "Female" %}selected{% endif %}>Female</option>
+            <option value="Other" {% if user.gender == "Other" %}selected{% endif %}>Other</option>
+        </select>
+
+        <label>Profile Picture</label>
+        <input type="file" name="profile">
+
+        <button type="submit">Update Profile</button>
+    </form>
+</body>
+{% endblock %}
